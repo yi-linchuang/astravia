@@ -181,7 +181,7 @@ function paint(scroll) {
     ? `<div role="status" class="toast mb-4 flex items-center gap-2 border border-ok bg-ok-soft px-4 py-3 text-sm text-ok">${ic('check')}${S.toast}</div>`
     : '';
   $('#app').innerHTML =
-    `<div class="${FADE ? 'fade' : ''}">${toast}${gate ? vGate() : VIEWS[S.view]()}</div>${gate ? '' : modalLayer()}`;
+    `<div class="${FADE ? 'fade' : ''}">${toast}${gate ? vGate() : VIEWS[S.view]()}</div>${!gate || S.modal === 'about' || S.modal === 'how' ? modalLayer() : ''}`;
   S.toast = '';
   if (
     (S.view === 'entry' && S.rec && S.rec.ind === 'cog' && !S.rec.res) ||

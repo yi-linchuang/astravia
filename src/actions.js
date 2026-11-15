@@ -229,6 +229,25 @@ export const A = {
     S.onb = { step: 'wear' };
     S.view = 'onboard';
   },
+  about: (d) => {
+    S.modal = d.v === 'how' ? 'how' : 'about';
+    setTimeout(() => {
+      const d = document.querySelector('[role=dialog]');
+      if (d) d.focus();
+    }, 40);
+    return 'keep';
+  },
+  quickstart: () => {
+    loadSample();
+    S.authed = true;
+    S.onb = null;
+    S.mind = { mood: 3, stress: 3, fatigue: 4, sleepq: 2 };
+    S.modal = null;
+    S.firstHome = true;
+    go('home');
+    S.boot = true;
+    startBoot('Sample data loaded. Every sample value is marked as a sample.');
+  },
   onbnext: (d) => {
     S.onb.step = d.v;
   },

@@ -131,6 +131,36 @@ function symptomModal() {
     `${acts}${med}<h3 class="lbl mt-5">Follow up</h3><div class="mt-2">${follow}</div>${worse}`,
   );
 }
+const HOW = [
+  [
+    'Understand Your Body',
+    'Interactive Body Map',
+    'Wearable data and self-assessments are compared against personal health baselines. An interactive body map highlights changes, helping astronauts identify areas that may need attention.',
+  ],
+  [
+    'Know What to Do',
+    'Guided Care',
+    'When astronauts experience symptoms, ASTRAVIA guides them through a step-by-step assessment, provides actionable care recommendations, and indicates when medical support may be needed.',
+  ],
+  [
+    'Check Mission Readiness',
+    'Mission Readiness Assessment',
+    'Before critical tasks like spacewalks, ASTRAVIA considers personal health, environmental conditions, and mission requirements to identify potential risks and flag tasks that may need reassessment.',
+  ],
+];
+function howModal() {
+  return modalShell(
+    'How it works',
+    `<p class="text-sm text-muted-foreground">ASTRAVIA helps astronauts understand their health and make informed decisions through three connected experiences:</p><ol class="mt-4 space-y-4">${HOW.map((h, i) => `<li class="flex gap-3"><span class="num grid h-6 w-6 shrink-0 place-items-center border border-primary text-xs text-primary">${i + 1}</span><div class="min-w-0"><p class="text-sm font-semibold">${h[0]} <span class="font-normal text-muted-foreground">· ${h[1]}</span></p><p class="mt-1 text-sm text-muted-foreground">${h[2]}</p></div></li>`).join('')}</ol>`,
+  );
+}
+const REPO_URL = 'https://github.com/yi-linchuang/astravia';
+function aboutModal() {
+  return modalShell(
+    'About',
+    `<h3 class="lbl">About Project</h3><p class="mt-2 text-sm">ASTRAVIA goes beyond health monitoring, helping astronauts know what to do next when immediate medical support from Earth is unavailable. By turning personal health data and spaceflight risks into actionable guidance, it helps crews assess their condition and readiness for critical missions. ASTRAVIA supports independent health decisions, reduces preventable risks, and protect both crew well-being and mission safety.</p><h3 class="lbl mt-5">Contributor</h3><p class="mt-2 text-sm">Yi-Lin, an AI product designer with over 8 years of experience in B2C SaaS product design, exploring human-centered design in space field. With a non-engineering background, they used AI as a development partner while taking ownership of product decisions, UX/UI design, implementation, and quality assurance.</p><div class="mt-5"><a href="${REPO_URL}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Go to Github Project</a></div>`,
+  );
+}
 const modalShell = (title, inner, wide) =>
   `<div class="modal-back${MODAL_FIRST ? ' enter' : ''}" data-act="closemodal"></div><div class="modal${MODAL_FIRST ? ' enter' : ''}${wide ? ' modal-wide' : ''}" role="dialog" aria-modal="true" aria-label="${title}" tabindex="-1">${panel(title, inner, { right: `<button type="button" data-act="closemodal" aria-label="Close" class="p-1 text-muted-foreground hover:text-primary">${ic('x')}</button>` })}</div>`;
 let shownModal = null,
@@ -142,15 +172,19 @@ export const modalLayer = () => {
   }
   MODAL_FIRST = shownModal !== S.modal;
   shownModal = S.modal;
-  return S.modal === 'symptom'
-    ? symptomModal()
-    : S.modal === 'must'
-      ? mustModal(changed()[0])
-      : S.modal === 'help'
-        ? helpModal()
-        : S.modal === 'spe'
-          ? speModal()
-          : '';
+  return S.modal === 'how'
+    ? howModal()
+    : S.modal === 'about'
+      ? aboutModal()
+      : S.modal === 'symptom'
+        ? symptomModal()
+        : S.modal === 'must'
+          ? mustModal(changed()[0])
+          : S.modal === 'help'
+            ? helpModal()
+            : S.modal === 'spe'
+              ? speModal()
+              : '';
 };
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && S.modal) {

@@ -126,30 +126,29 @@ export function vGate() {
   const c = ctx(),
     o = S.onb;
   if (!o) {
-    const row = (k, v) =>
-        `<div class="flex justify-between gap-3 py-2.5"><dt class="text-muted-foreground">${k}</dt><dd class="num text-right">${v}</dd></div>`,
+    const row = (k, v) => `<div><dt class="lbl">${k}</dt><dd class="num mt-0.5 text-sm">${v}</dd></div>`,
+      line = (k, v) =>
+        `<div class="flex justify-between gap-3 border-t border-border pt-3 text-sm"><dt class="text-muted-foreground">${k}</dt><dd class="num text-right">${v}</dd></div>`,
       T = timeInfo();
     const rows = [
-      ['Environment', c.name],
-      ['Location', T.loc],
-      ['UTC', T.utc.replace(' UTC', '')],
       ['Mission Day', pad3(c.md)],
       ['MET', T.met.replace('MET ', '')],
+      ['UTC', T.utc.replace(' UTC', '')],
+      ['Gravity', c.g],
       ...(T.sol
         ? [
             ['Sol', pad3(c.n)],
             ['LMST', hm(S.clock)],
           ]
         : []),
-      ...(T.evaLoc ? [['EVA site', T.evaLoc]] : []),
-      ['Gravity', c.g],
     ];
+    const lines = [['Environment', c.name], ['Location', T.loc], ...(T.evaLoc ? [['EVA site', T.evaLoc]] : [])];
     return `<div class="gate-card mx-auto mt-[4vh] w-full max-w-md"><p class="glow mb-4 text-center text-lg font-bold tracking-[.2em]">ASTRAVIA</p>${panel(
       'Crew sign-in',
       `<div class="flex flex-col items-center text-center">${AVATAR}<p class="lbl mt-4">Welcome back</p><h1 class="mt-1 text-2xl font-bold">Mei Lin</h1><p class="lbl mt-1">Mission specialist</p><p class="num mt-2 text-xs uppercase tracking-[.14em] text-muted-foreground">Simulator ID <span class="text-foreground">${SIM_ID}</span></p>
-      <dl class="mt-5 w-full divide-y divide-border border-y border-border text-left text-sm">${rows.map((r) => row(r[0], r[1])).join('')}</dl>
-      <div class="mt-5 w-full [&>button]:w-full">${btn('Log in', 'login', 'primary')}</div><p class="mt-3 text-xs text-muted-foreground">After signing in, you put on your devices and take two short checks. It takes about 4 minutes.</p></div>`,
-    )}</div>`;
+      <dl class="mt-5 w-full border-y border-border py-4 text-left"><div class="grid grid-cols-2 gap-x-4 gap-y-3 pb-3">${rows.map((r) => row(r[0], r[1])).join('')}</div><div class="space-y-3">${lines.map((r) => line(r[0], r[1])).join('')}</div></dl>
+      <div class="mt-5 w-full [&>button]:w-full">${btn('Log in', 'quickstart', 'primary')}</div><div class="mt-2 w-full [&>button]:w-full">${btn('Restart Onboard', 'login', 'outline')}</div><p class="mt-3 text-xs text-muted-foreground">After signing in, you put on your devices and take two short checks. It takes about 4 minutes.</p></div>`,
+    )}<nav class="mt-4 flex justify-center gap-6 text-xs uppercase tracking-[.14em]" aria-label="Footer"><button type="button" data-act="about" data-v="how" class="text-muted-foreground hover:text-primary">How it works</button><button type="button" data-act="about" data-v="about" class="text-muted-foreground hover:text-primary">About</button></nav></div>`;
   }
   const idx = ONB_STEPS.findIndex((x) => x[0] === o.step);
   const stepper = `<ol class="mb-5 flex flex-wrap gap-x-1 gap-y-2 text-[12px] uppercase tracking-[.1em]">${ONB_STEPS.map((x, i) => `<li class="flex items-center gap-1.5 ${i === idx ? 'text-primary' : i < idx ? 'text-foreground' : 'text-muted-foreground'}" ${i === idx ? 'aria-current="step"' : ''}><span class="num grid h-6 w-6 place-items-center border text-xs ${i < idx ? 'border-ok text-ok' : i === idx ? 'border-primary bg-primary text-primary-foreground' : 'border-border'}">${i < idx ? ic('check', 'h-3.5 w-3.5') : i + 1}</span>${x[1]}${i < 3 ? '<span class="mx-1 text-border">——</span>' : ''}</li>`).join('')}</ol>`;
