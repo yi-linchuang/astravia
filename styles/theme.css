@@ -38,7 +38,7 @@
   h1, h2, h3 { text-wrap: balance; letter-spacing: 0.02em; }
   .lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
 
-  /* Panel: square frame with bright L-brackets on all four corners; the header rule ends in two dots. */
+  /* Panel: square frame with bright L-brackets on all four corners; the header rule ends in two short bars in the same colour. */
   .panel { position: relative; min-width: 0; background: hsl(var(--card) / .92); border: 1px solid hsl(var(--border)); }
   .panel::before { content: ""; position: absolute; inset: -1px; pointer-events: none; z-index: 1;
     background: linear-gradient(var(--corner), var(--corner)) 0 0 / 12px 2px, linear-gradient(var(--corner), var(--corner)) 0 0 / 2px 12px,
@@ -48,9 +48,8 @@
     background-repeat: no-repeat; }
   .panel.edge-alert { --corner: hsl(var(--alert) / .7); } .panel.edge-green { --corner: hsl(var(--ok) / .6); } .panel.edge-info { --corner: hsl(var(--info) / .6); }
   .panel-h { position: relative; }
-  .panel-h::after { content: ""; position: absolute; left: -5px; right: -5px; bottom: -4px; height: 7px; pointer-events: none;
-    background: radial-gradient(circle, hsl(var(--primary)) 0 2px, hsl(var(--primary) / .25) 2.5px 3.5px, transparent 4px) left center / 7px 7px no-repeat,
-      radial-gradient(circle, hsl(var(--primary)) 0 2px, hsl(var(--primary) / .25) 2.5px 3.5px, transparent 4px) right center / 7px 7px no-repeat; }
+  .panel-h::after { content: ""; position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; pointer-events: none;
+    background: linear-gradient(var(--corner), var(--corner)) left center / 12px 100% no-repeat, linear-gradient(var(--corner), var(--corner)) right center / 12px 100% no-repeat; }
   .panel-h { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .35rem .5rem; padding: .55rem 1rem; border-bottom: 1px solid hsl(var(--border)); background: hsl(var(--raised)); }
   .panel-b { padding: 1rem; }
   .panel.edge-alert { border-color: hsl(var(--alert) / .6); } .panel.edge-info { border-color: hsl(var(--info) / .6); } .panel.edge-green { border-color: hsl(var(--ok) / .6); }
@@ -94,3 +93,13 @@
     .fillbar { animation: fillbar .7s ease-out both; } @keyframes fillbar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
     .scanline { animation: scany 1.6s ease-in-out infinite alternate; } @keyframes scany { from { transform: translateY(0); } to { transform: translateY(400px); } }
   }
+
+  /* Whole-card links (Must do, Reported symptom, Environment) and the Status collapse toggle. */
+  .panel-link { cursor: pointer; transition: border-color 150ms ease, box-shadow 150ms ease; }
+  @media (hover: hover) and (pointer: fine) { .panel.panel-link:hover { border-color: hsl(var(--primary)); box-shadow: var(--glow-green); } }
+  .panel-link .go-arrow { color: hsl(var(--muted-foreground)); transition: color 150ms ease; }
+  .panel-link:hover .go-arrow, .panel-link:focus-visible .go-arrow { color: hsl(var(--primary)); }
+  .status-toggle { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: hsl(var(--muted-foreground)); border: 1px solid transparent; }
+  .status-toggle:hover { color: hsl(var(--primary)); border-color: hsl(var(--border)); }
+  .status-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .env-row { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; padding: .7rem 1rem; }

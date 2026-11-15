@@ -22,6 +22,7 @@ function fresh() {
   return {
     view: 'home',
     htab: 'body',
+    statusCollapsed: false,
     signal: null,
     task: null,
     clock: 490,

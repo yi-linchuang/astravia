@@ -153,6 +153,32 @@ await test('Who can help opens a modal with call-to-action buttons; the CMO call
   assert.equal(await state(() => S.call.stage), 'ended');
 });
 
+await test('Must do is a whole-card control: Enter opens the modal; Environment row links to its page; Status collapses', async () => {
+  await signedIn();
+  await page.locator('[role="button"][data-v="must"]').focus();
+  await page.keyboard.press('Enter');
+  await wait(100);
+  assert.equal(await page.locator('[role="dialog"]').count(), 1);
+  await page.keyboard.press('Escape');
+  await page.locator('[role="button"][data-v="must"]').focus();
+  await page.keyboard.press(' ');
+  await wait(100);
+  assert.equal(await page.locator('[role="dialog"]').count(), 1);
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('[data-act="takeaction"][data-v="must"] button').count(), 0, 'no inner button');
+  await page.locator('[role="link"][data-v="habitat"]').focus();
+  await page.keyboard.press('Enter');
+  await settle();
+  assert.equal(await state(() => S.view), 'habitat');
+  await state(() => { go('home'); render(true); }); await settle();
+  assert.equal(await page.locator('[data-act="statustoggle"]').getAttribute('aria-expanded'), 'true');
+  await tap('statustoggle');
+  assert.equal(await page.locator('[data-act="statustoggle"]').getAttribute('aria-expanded'), 'false');
+  assert.match(await page.locator('#status-body').innerText(), /baseline|No readings yet/);
+  await tap('statustoggle');
+  assert.equal(await page.locator('#status-body [data-act="bodyto"]').count() > 0, true);
+});
+
 await test('solar particle event (Mars base) opens a modal with dose rate and shelter map', async () => {
   await signedIn();
   await state(() => { S.env = 'base'; S.body = 'mars'; S.clock = 300; go('home'); render(true); }); await settle();

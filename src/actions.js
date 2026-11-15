@@ -36,6 +36,10 @@ export const A = {
     S.signal = null;
     S.region = d.v || null;
   },
+  statustoggle: () => {
+    S.statusCollapsed = !S.statusCollapsed;
+    return 'keep';
+  },
   takeaction: (d) => {
     S.modal = d.v || 'symptom';
     setTimeout(() => {

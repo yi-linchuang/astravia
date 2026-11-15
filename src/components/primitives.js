@@ -15,6 +15,7 @@ const ICON = {
   minus: 'M5 12h14',
   right: 'M9 6l6 6-6 6',
   left: 'M19 12H5M11 6l-6 6 6 6',
+  down: 'M6 9l6 6 6-6',
   clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
   signal: 'M5 13a7 7 0 0 1 14 0M8.5 13a3.5 3.5 0 0 1 7 0M12 13v7',
   x: 'M6 6l12 12M18 6 6 18',

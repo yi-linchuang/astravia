@@ -26,6 +26,7 @@ document.addEventListener('focusout', (e) => {
 document.addEventListener('click', (e) => {
   const el = e.target.closest('[data-act]');
   if (!el || el.disabled) return;
+  if (el.matches('[role="button"], [role="link"]') && e.target.closest('.info-i')) return;
   const r = A[el.dataset.act](el.dataset);
   if (r === false) return;
   render(r !== 'keep');
@@ -37,6 +38,12 @@ document.addEventListener('input', (e) => {
   if (ef && S.rec) S.rec.vals[ef] = e.target.value;
 });
 document.addEventListener('keydown', (e) => {
+  const card = e.target.matches && e.target.matches('[role="button"][data-act], [role="link"][data-act]');
+  if (card && (e.key === 'Enter' || (e.key === ' ' && e.target.getAttribute('role') === 'button'))) {
+    e.preventDefault();
+    e.target.click();
+    return;
+  }
   if (e.key === 'Enter' && e.target.dataset && e.target.dataset.ef) {
     A.entrysave();
     render(false);

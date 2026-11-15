@@ -32,7 +32,18 @@ Assumptions that belong to this product, not to NASA: the radiation alert level 
 
 ## Disclaimer
 
-ASTRAVIA is a student challenge project. It is not affiliated with or endorsed by NASA or the Canadian Space Agency, and it is not medical advice. Thresholds marked "assumed" are product assumptions, not medical standards. The code, text and simulated data were produced with AI assistance (Claude, by Anthropic) and reviewed by the author.
+ASTRAVIA is a student challenge project. It is not affiliated with or endorsed by NASA or the Canadian Space Agency, and it is not medical advice. Thresholds marked "assumed" are product assumptions, not medical standards.
+
+## AI Usage Disclosure
+
+ASTRAVIA was developed with the assistance of AI tools, including Claude and ChatGPT.
+
+- **Product Design:** AI assisted with brainstorming, research synthesis, and design exploration.
+- **Code:** AI assisted with generating and refining frontend components and application logic.
+- **Data:** Simulated astronaut health data was generated with AI assistance for demonstration purposes. It does not represent real astronaut medical records.
+- **Human Contribution:** The team defined the product concept, user experience, decision-making logic, and overall project direction, and reviewed and tested the implementation.
+
+NASA research and publicly available resources were used as scientific references and are cited separately.
 
 ## Quick start
 

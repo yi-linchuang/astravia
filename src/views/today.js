@@ -1,31 +1,17 @@
-// Today: Must do, Reported symptom, Status, live Environment, tasks and routine.
-import { thumb } from '../components/bodyFigure.js';
-import { btn, head, ic, infoI, panel, pill, rdPill, stPill } from '../components/primitives.js';
+// Today: Must do, Reported symptom, live Environment row, Status, tasks and routine.
+const card = (act, v) => ({ attr: `role="button" tabindex="0" data-act="${act}" data-v="${v}"`, cls: 'panel-link' });
+const GO = `<span class="go-arrow inline-flex">${ic('right', 'h-4 w-4')}</span>`;
+import { btn, head, ic, infoI, panel, pill, rdPill } from '../components/primitives.js';
 import { CO2_MEAN, RH, TEMP, ctx } from '../data/env.js';
 import { FLOWS, ansLine } from '../data/flows.js';
 import { IND, MIN, isDue } from '../data/indicators.js';
-import { REG, regSt } from '../data/measures.js';
 import { ALERT, ISS_RAD, radNow, radOk, speActive, speLine } from '../data/radiation.js';
 import { anyData, todayE } from '../data/records.js';
 import { changed, tasks } from '../data/signals.js';
 import { capF, hm, reduceMotion } from '../lib/util.js';
 import { S } from '../state.js';
+import { statusPanel } from './status.js';
 
-function bodyOverview() {
-  const keys = Object.keys(REG).filter((k) => k !== 'rad');
-  const fig = `<button type="button" data-act="bodyto" data-v="" aria-label="Open the body map" class="block w-full max-w-[150px] shrink-0 border border-border bg-background p-2 hover:border-primary">${thumb(keys, true)}</button>`;
-  const list = Object.keys(REG)
-    .map(
-      (k) =>
-        `<li><button type="button" data-act="bodyto" data-v="${k}" class="row-btn"><span class="min-w-0 flex-1"><span class="block text-sm font-medium">${REG[k].name}</span><span class="block text-sm text-muted-foreground">${REG[k].items()[0].val}</span></span>${stPill(regSt(k))}</button></li>`,
-    )
-    .join('');
-  return panel(
-    'Status',
-    `<div class="flex flex-wrap items-start gap-4 sm:flex-nowrap">${fig}<ul class="min-w-0 flex-1 divide-y divide-border">${list}</ul></div>`,
-    { cls: 'scan' },
-  );
-}
 /* ---------- home ---------- */
 function routine() {
   const exDone = S.clock >= 870,
@@ -98,23 +84,18 @@ export function vHome() {
       )
     : '';
   const top = ch[0];
-  const first = !anyData()
-    ? '<p class="text-sm">Record your first reading.</p><p class="mt-2 text-sm text-muted-foreground">It takes about a minute, and everything else builds on it.</p>'
-    : top
-      ? `<p class="text-sm"><span class="text-primary">${top.name}.</span> ${top.head}.</p><p class="mt-2 text-sm text-muted-foreground">${top.todo}</p>`
-      : '<p class="text-sm">Nothing stands out today.</p><p class="mt-2 text-sm text-muted-foreground">Keep your routine, and record anything that is due.</p>';
-  const must = mustPanel(top, first);
-  return `<div class="grid gap-5 lg:grid-cols-12">
-    <div class="grid min-w-0 content-start gap-5 lg:col-span-12">${rad}<div class="grid gap-5 ${follow ? 'lg:grid-cols-2' : ''}">${must}${follow}</div></div>
-    <div class="grid min-w-0 content-start gap-5 lg:col-span-7">
-      ${bodyOverview()}
-      ${liveEnvPanel()}
-      <button type="button" data-act="takeaction" data-v="help" class="flex w-full flex-wrap items-center justify-between gap-x-5 gap-y-1 border border-border px-4 py-2 text-left text-xs text-muted-foreground hover:border-primary/60"><span class="lbl">Who can help</span><span>CMO Okafor · ${E.id === 'rover' ? 'at the base, by radio' : 'on board, available now'}</span><span>Flight surgeon · ${E.id === 'station' ? 'live video' : 'reply in ' + E.reply}</span><span class="uppercase tracking-[.1em] text-primary">When to call whom</span></button>
-    </div>
-    <div class="grid min-w-0 content-start gap-5 lg:col-span-5">
+  const must = mustPanel(top);
+  return `<div class="grid min-w-0 content-start gap-5">
+    ${rad}
+    <div class="grid gap-5 ${follow ? 'lg:grid-cols-2' : ''}">${must}${follow}</div>
+    ${liveEnvPanel()}
+    ${statusPanel()}
+    <div class="grid items-start gap-5 lg:grid-cols-2">
       ${panel("Today's tasks", taskTable())}
       ${routine()}
-    </div></div>`;
+    </div>
+    <button type="button" data-act="takeaction" data-v="help" class="flex w-full flex-wrap items-center justify-between gap-x-5 gap-y-1 border border-border px-4 py-2 text-left text-xs text-muted-foreground hover:border-primary/60"><span class="lbl">Who can help</span><span>CMO Okafor · ${E.id === 'rover' ? 'at the base, by radio' : 'on board, available now'}</span><span>Flight surgeon · ${E.id === 'station' ? 'live video' : 'reply in ' + E.reply}</span><span class="uppercase tracking-[.1em] text-primary">When to call whom</span></button>
+  </div>`;
 }
 export function taskTable() {
   return `<ul class="divide-y divide-border">${tasks()
@@ -181,20 +162,14 @@ const liveVal = (r) =>
   (Math.random() - 0.5) * r.amp * 0.3;
 function liveEnvPanel() {
   const tone = { ok: '', watch: 'text-warn', alert: 'text-alert' };
-  const tile = (r) =>
-    `<div class="min-w-0 border border-border bg-muted p-3"><div class="flex items-center justify-between gap-2"><p class="lbl truncate">${r.label}</p><span class="pulse-live h-1.5 w-1.5 shrink-0" style="background:hsl(${r.st === 'alert' ? 'var(--alert)' : r.st === 'watch' ? 'var(--warn)' : 'var(--ok)'})"></span></div><p class="num mt-1 text-lg font-semibold ${tone[r.st]}"><span data-live="${r.k}" data-base="${r.base}" data-amp="${r.amp}" data-dp="${r.dp}">${liveVal(r).toFixed(r.dp)}</span> <span class="text-xs font-normal text-muted-foreground">${r.unit}</span></p><p class="text-xs text-muted-foreground">${r.sub}</p></div>`;
-  return panel(
-    'Environment',
-    `<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">${liveRows().map(tile).join('')}</div>`,
-    {
-      right:
-        infoI(
-          ctx().id === 'station'
-            ? 'Real NASA ISS data replayed, with a small simulated fluctuation so it looks live'
-            : 'Replayed NASA radiation data and simulated cabin values, with a small fluctuation so it looks live',
-        ) + btn('Open Environment' + ic('right', 'h-3.5 w-3.5'), 'go', 'ghost', 'data-v="habitat"'),
-    },
+  const tip = infoI(
+    ctx().id === 'station'
+      ? 'Real NASA ISS data replayed, with a small simulated fluctuation so it looks live'
+      : 'Replayed NASA radiation data and simulated cabin values, with a small fluctuation so it looks live',
   );
+  const cell = (r) =>
+    `<div class="min-w-0"><p class="lbl truncate">${r.label}</p><p class="num text-base font-semibold ${tone[r.st]}"><span data-live="${r.k}" data-base="${r.base}" data-amp="${r.amp}" data-dp="${r.dp}">${liveVal(r).toFixed(r.dp)}</span> <span class="text-xs font-normal text-muted-foreground">${r.unit}</span></p></div>`;
+  return `<section class="panel panel-link env-row" role="link" tabindex="0" data-act="go" data-v="habitat" aria-label="Environment, open the Environment page"><div class="flex items-center gap-2"><h2 class="lbl">Environment</h2>${tip}</div><div class="grid min-w-0 flex-1 grid-cols-2 gap-x-5 gap-y-2 sm:grid-cols-3 lg:grid-cols-6">${liveRows().map(cell).join('')}</div>${GO}</section>`;
 }
 function tickLive() {
   if (S.view !== 'home' || !S.authed) return;
@@ -220,6 +195,7 @@ function symptomPanel() {
   const c = S.care,
     f = c.flow && FLOWS[c.flow];
   if (!f || c.status === 'none') return '';
+  const resolved = c.status === 'resolved';
   const tag = {
     active: ['In progress', 'clock', 'info'],
     followup: ['Follow-up set', 'clock', 'info'],
@@ -229,21 +205,21 @@ function symptomPanel() {
   }[c.status] || ['', 'minus', 'nodata'];
   return panel(
     'Reported symptom',
-    `<p class="text-sm"><span class="text-primary">${f.name}${f.private ? ' · private' : ''}.</span> ${capF(ansLine())}${f.blocksEva && c.status !== 'resolved' ? `. Holds ${ctx().mainShort}` : ''}.</p><div class="mt-3 flex flex-wrap items-center gap-3">${pill(tag[0], tag[1], tag[2])}${c.status === 'resolved' ? '' : btn('Take action', 'takeaction', 'primary', 'data-v="symptom"')}</div>`,
-    { edge: c.status === 'resolved' ? '' : 'info' },
+    `<p class="text-sm"><span class="text-primary">${f.name}${f.private ? ' · private' : ''}.</span> ${capF(ansLine())}${f.blocksEva && c.status !== 'resolved' ? `. Holds ${ctx().mainShort}` : ''}.</p><div class="mt-3 flex flex-wrap items-center gap-3">${pill(tag[0], tag[1], tag[2])}</div>`,
+    resolved ? { edge: '' } : { edge: 'info', ...card('takeaction', 'symptom'), right: GO },
   );
 }
-function mustPanel(top, first) {
+function mustPanel(top) {
   if (!anyData())
-    return panel(
-      'Must do',
-      `<p class="text-sm">Record your first reading.</p><div class="mt-3">${btn('Take action', 'htab', 'primary', 'data-v="body"')}</div>`,
-      { edge: 'info' },
-    );
+    return panel('Must do', `<p class="text-sm">Record your first reading.</p>`, {
+      edge: 'info',
+      ...card('htab', 'body'),
+      right: GO,
+    });
   if (!top) return panel('Must do', `<p class="text-sm">Nothing stands out today.</p>`, { edge: 'info' });
-  return panel(
-    'Must do',
-    `<p class="text-sm"><span class="text-primary">${top.name}.</span> ${top.head}.</p><div class="mt-3">${btn('Take action', 'takeaction', 'primary', 'data-v="must"')}</div>`,
-    { edge: 'info' },
-  );
+  return panel('Must do', `<p class="text-sm"><span class="text-primary">${top.name}.</span> ${top.head}.</p>`, {
+    edge: 'info',
+    ...card('takeaction', 'must'),
+    right: GO,
+  });
 }
