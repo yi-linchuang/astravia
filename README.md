@@ -1,4 +1,4 @@
-# ASTRAVIA
+# ASTRAVIA - Health Copilot Platform
 
 ASTRAVIA goes beyond health monitoring, helping astronauts know what to do next when immediate medical support from Earth is unavailable. By turning personal health data and spaceflight risks into actionable guidance, it helps crews assess their condition and readiness for critical missions. ASTRAVIA supports independent health decisions, reduces preventable risks, and protect both crew well-being and mission safety.
 
