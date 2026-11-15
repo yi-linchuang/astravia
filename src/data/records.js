@@ -1,5 +1,5 @@
 // User entries (typed, tapped, photographed or wearable), sample wearable data, and lookups.
-import { ctx } from './env.js';
+import { DISCLAIMER, SIM_ID, ctx } from './env.js';
 import { FLOWS } from './flows.js';
 import { judge } from './indicators.js';
 import { S } from '../state.js';
@@ -11,6 +11,8 @@ export const pvtPass = () => {
 export const caseActive = () => ['active', 'followup', 'cmo'].includes(S.care.status);
 export const caseBlocks = () => caseActive() && FLOWS[S.care.flow] && FLOWS[S.care.flow].blocksEva;
 // ---------- recorded health data ----------
+// Simulated wearable and self-check readings for the demo astronaut. Synthetic demonstration data. Not real astronaut medical data.
+export const SAMPLE_INFO = { id: SIM_ID, disclaimer: DISCLAIMER };
 export const SAMPLE = {
   sleep: [7.3, 7.2, 7.1, 7.0, 7.1, 6.9, 6.8, 6.6, 6.2, 5.9, 5.6, 5.5, 5.4, 5.5].map((h, i) => [
     i - 13,

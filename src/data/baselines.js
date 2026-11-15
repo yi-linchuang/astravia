@@ -1,4 +1,5 @@
 // Baseline tables used by the baseline review and My account.
+// DISCLAIMER: Synthetic demonstration data. Not real astronaut medical data.
 import { ctx } from './env.js';
 import { LONG } from './longterm.js';
 

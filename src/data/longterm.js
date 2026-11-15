@@ -1,4 +1,5 @@
 // Long-term change series: bone, strength, eyes, cumulative radiation dose.
+// DISCLAIMER: Synthetic demonstration data. Not real astronaut medical data.
 import { negTicks, posTicks, radTicks } from '../components/charts.js';
 import { ctx } from './env.js';
 import { LONGV, envKey, lastOf, longXs, radTotal } from './radiation.js';

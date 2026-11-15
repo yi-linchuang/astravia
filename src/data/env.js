@@ -18,7 +18,7 @@ export const I4 = {
   xs: ['L-92', 'L-44', 'L-3', 'R+1', 'R+45', 'R+82', 'R+194'],
   il6: [3.7, 3.1, 4.2, 6.6, 4.7, 4.0, 3.7],
 };
-/* Everything below is SIMULATED and is not NASA data. */
+/* Everything below is SIMULATED and is not NASA data. Synthetic demonstration data. Not real astronaut medical data. */
 // ---------- environments ----------
 export const BODIES = {
   mars: {
@@ -141,6 +141,7 @@ export function ctx() {
   return E[S.env];
 }
 export const SIM_ID = 'SIM-0412';
+export const DISCLAIMER = 'Synthetic demonstration data. Not real astronaut medical data.';
 export function timeInfo() {
   const c = ctx(),
     t = S.clock,

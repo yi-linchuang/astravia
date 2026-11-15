@@ -1,4 +1,5 @@
 // Health indicator definitions, baselines and bands, and the judgement of a reading against them.
+// DISCLAIMER: Synthetic demonstration data. Not real astronaut medical data.
 import { ST } from '../components/primitives.js';
 import { ctx } from './env.js';
 import { worst } from './measures.js';
