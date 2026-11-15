@@ -1,0 +1,21 @@
+{
+  "name": "astravia",
+  "version": "1.0.0",
+  "description": "ASTRAVIA: a self-assessment health copilot for astronauts when Earth is too far away to ask. NASA Space Apps Challenge prototype.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "build:css": "tailwindcss -c tailwind.config.cjs -i styles/tailwind.input.css -o styles/tailwind.css --minify",
+    "lint": "eslint src",
+    "format": "prettier --write --single-quote --print-width 120 \"src/**/*.js\"",
+    "test": "node tests/smoke.mjs"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "globals": "^15.0.0",
+    "playwright": "1.63.0",
+    "prettier": "^3.0.0",
+    "tailwindcss": "3.4.17"
+  }
+}

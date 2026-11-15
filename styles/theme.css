@@ -1,0 +1,96 @@
+/* Layout: flight-deck console. Bracketed panels in a 12-col grid, a left system rail, a top status strip with the always-present "I feel unwell" control. Single dark look by design. */
+  :root {
+    /* Deep-space blue: navy ground, ice-blue primary, teal for "normal", orange for "watch", lavender for "info". */
+    --ground: 220 60% 4%; --background: 220 60% 4%; --card: 215 50% 9%; --raised: 214 44% 13%; --foreground: 205 45% 90%;
+    --muted: 214 42% 12%; --muted-foreground: 210 24% 66%; --border: 211 36% 23%; --ring: 205 90% 74%;
+    --primary: 205 90% 74%; --primary-foreground: 220 60% 5%; --chart: 205 90% 74%;
+    --ok: 215 90% 67%; --ok-soft: 216 58% 14%; --warn: 26 90% 65%; --warn-soft: 26 55% 11%;
+    --alert: 0 90% 69%; --alert-soft: 0 48% 12%; --info: 250 92% 81%; --info-soft: 250 40% 15%;
+    --glow-green: 0 0 8px #85c6f866, 0 0 20px #85c6f833; --glow-amber: 0 0 8px #f5944e66, 0 0 20px #f5944e33; --glow-red: 0 0 8px #f86b6b66, 0 0 20px #f86b6b33;
+    --tglow-green: 0 0 6px #85c6f899, 0 0 14px #85c6f844; --tglow-ok: 0 0 6px #5f9bf788, 0 0 12px #5f9bf733;
+    --corner: hsl(var(--primary) / .38);
+    --clip-md: polygon(10px 0%, 100% 0%, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0% 100%, 0% 10px);
+    --clip-sm: polygon(6px 0%, 100% 0%, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0% 100%, 0% 6px);
+    --font-mono: 'IBM Plex Mono', 'Space Mono', ui-monospace, 'Courier New', monospace;
+    --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    color-scheme: dark;
+  }
+  *, *::before, *::after { border-radius: 0 !important; }
+  /* Galaxy ground: nebula glow, a sparse star field and a faint survey grid. Fixed behind everything; panels stay solid enough to read on. */
+  body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 23px 41px, #ffffffcc, transparent 60%), radial-gradient(1px 1px at 131px 87px, #cfe6ffaa, transparent 60%),
+      radial-gradient(1.5px 1.5px at 197px 19px, #ffffffaa, transparent 60%), radial-gradient(1px 1px at 61px 163px, #b9c8ff99, transparent 60%),
+      radial-gradient(1px 1px at 241px 211px, #ffffff88, transparent 60%), radial-gradient(1.5px 1.5px at 309px 127px, #cfe6ffbb, transparent 60%),
+      radial-gradient(1px 1px at 377px 263px, #ffffff99, transparent 60%), radial-gradient(1px 1px at 151px 301px, #d8d0ffaa, transparent 60%),
+      radial-gradient(1px 1px at 71px 97px, #ffffffaa, transparent 60%), radial-gradient(2px 2px at 113px 53px, #e6f2ffcc, transparent 60%),
+      radial-gradient(1px 1px at 29px 139px, #cfe6ff99, transparent 60%), radial-gradient(1px 1px at 167px 17px, #ffffff88, transparent 60%),
+      linear-gradient(hsl(205 90% 74% / .035) 1px, transparent 1px), linear-gradient(90deg, hsl(205 90% 74% / .035) 1px, transparent 1px),
+      linear-gradient(118deg, transparent 28%, hsl(222 60% 32% / .10) 42%, hsl(250 45% 40% / .12) 50%, hsl(205 60% 38% / .08) 58%, transparent 72%),
+      radial-gradient(ellipse 70% 55% at 12% 0%, hsl(222 75% 22% / .55), transparent 70%),
+      radial-gradient(ellipse 55% 45% at 92% 28%, hsl(262 60% 26% / .35), transparent 70%),
+      radial-gradient(ellipse 80% 50% at 55% 108%, hsl(214 75% 20% / .4), transparent 70%);
+    background-size: 211px 223px, 293px 271px, 337px 349px, 251px 233px, 401px 389px, 359px 367px, 443px 421px, 283px 331px, 181px 197px, 509px 467px, 157px 173px, 229px 241px, 80px 80px, 80px 80px, 100% 100%, 100% 100%, 100% 100%, 100% 100%; }
+  body { background: hsl(var(--ground)); color: hsl(var(--foreground)); font-family: var(--font-sans); font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  ::selection { background: #85c6f8; color: #050a14; }
+  .shell { padding-block: 20px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .num { font-variant-numeric: tabular-nums; }
+  h1, h2, h3 { text-wrap: balance; letter-spacing: 0.02em; }
+  .lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+
+  /* Panel: square frame with bright L-brackets on all four corners; the header rule ends in two dots. */
+  .panel { position: relative; min-width: 0; background: hsl(var(--card) / .92); border: 1px solid hsl(var(--border)); }
+  .panel::before { content: ""; position: absolute; inset: -1px; pointer-events: none; z-index: 1;
+    background: linear-gradient(var(--corner), var(--corner)) 0 0 / 12px 2px, linear-gradient(var(--corner), var(--corner)) 0 0 / 2px 12px,
+      linear-gradient(var(--corner), var(--corner)) 100% 0 / 12px 2px, linear-gradient(var(--corner), var(--corner)) 100% 0 / 2px 12px,
+      linear-gradient(var(--corner), var(--corner)) 0 100% / 12px 2px, linear-gradient(var(--corner), var(--corner)) 0 100% / 2px 12px,
+      linear-gradient(var(--corner), var(--corner)) 100% 100% / 12px 2px, linear-gradient(var(--corner), var(--corner)) 100% 100% / 2px 12px;
+    background-repeat: no-repeat; }
+  .panel.edge-alert { --corner: hsl(var(--alert) / .7); } .panel.edge-green { --corner: hsl(var(--ok) / .6); } .panel.edge-info { --corner: hsl(var(--info) / .6); }
+  .panel-h { position: relative; }
+  .panel-h::after { content: ""; position: absolute; left: -5px; right: -5px; bottom: -4px; height: 7px; pointer-events: none;
+    background: radial-gradient(circle, hsl(var(--primary)) 0 2px, hsl(var(--primary) / .25) 2.5px 3.5px, transparent 4px) left center / 7px 7px no-repeat,
+      radial-gradient(circle, hsl(var(--primary)) 0 2px, hsl(var(--primary) / .25) 2.5px 3.5px, transparent 4px) right center / 7px 7px no-repeat; }
+  .panel-h { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .35rem .5rem; padding: .55rem 1rem; border-bottom: 1px solid hsl(var(--border)); background: hsl(var(--raised)); }
+  .panel-b { padding: 1rem; }
+  .panel.edge-alert { border-color: hsl(var(--alert) / .6); } .panel.edge-info { border-color: hsl(var(--info) / .6); } .panel.edge-green { border-color: hsl(var(--ok) / .6); }
+  .scan { position: relative; } .scan::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(0,0,0,.18) 3px 4px); }
+
+  /* scificn Button: EXEC / OUTLINE / GHOST / ABORT */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 40px; padding: 0 1rem; font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; border: 1px solid transparent; background: transparent; cursor: pointer; transition: transform 160ms var(--ease-out), background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease; white-space: nowrap; }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .btn-exec { border-color: hsl(var(--primary)); color: hsl(var(--primary)); }
+  @media (hover: hover) and (pointer: fine) { .btn-exec:not(:disabled):hover { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); box-shadow: var(--glow-green); } }
+  .btn-outline { background: hsl(var(--card)); border-color: hsl(var(--border)); color: hsl(var(--foreground)); }
+  @media (hover: hover) and (pointer: fine) { .btn-outline:not(:disabled):hover { border-color: hsl(var(--primary)); color: hsl(var(--primary)); box-shadow: var(--glow-green); } }
+  .btn-ghost { color: hsl(var(--muted-foreground)); } @media (hover: hover) and (pointer: fine) { .btn-ghost:hover { color: hsl(var(--primary)); border-color: hsl(var(--border)); } }
+  .btn-abort { border-color: hsl(var(--alert)); color: hsl(var(--alert)); } @media (hover: hover) and (pointer: fine) { .btn-abort:hover { background: hsl(var(--alert)); color: hsl(var(--primary-foreground)); box-shadow: var(--glow-red); } }
+  .btn-unwell { border-color: hsl(var(--warn)); color: hsl(var(--warn)); } @media (hover: hover) and (pointer: fine) { .btn-unwell:hover { background: hsl(var(--warn)); color: hsl(var(--primary-foreground)); box-shadow: var(--glow-amber); } }
+
+  /* scificn Badge */
+  .badge { display: inline-flex; align-items: center; gap: .35rem; padding: 1px 8px; font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; border: 1px solid; white-space: nowrap; }
+  .b-ok { border-color: hsl(var(--ok)); color: hsl(var(--ok)); text-shadow: var(--tglow-ok); box-shadow: inset 0 0 8px #5f9bf714; }
+  .b-watch { border-color: hsl(var(--warn)); color: hsl(var(--warn)); }
+  .b-alert { border-color: hsl(var(--alert)); color: hsl(var(--alert)); box-shadow: inset 0 0 8px #f86b6b18; }
+  .b-nodata { border-color: hsl(var(--border)); color: hsl(var(--muted-foreground)); }
+  .b-info { border-color: hsl(var(--info)); color: hsl(var(--info)); }
+
+  .row-btn { display: flex; width: 100%; align-items: center; gap: .75rem; padding: .65rem .25rem; text-align: left; border-left: 2px solid transparent; transition: background .12s, border-color .12s; }
+  @media (hover: hover) and (pointer: fine) { .row-btn:hover { background: hsl(var(--raised)); border-left-color: hsl(var(--primary)); } }
+  .glow { color: hsl(var(--primary)); text-shadow: var(--tglow-green); }
+  button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 1px solid hsl(var(--ring)); outline-offset: 2px; box-shadow: var(--glow-green); }
+  #tip { position: fixed; z-index: 50; pointer-events: none; background: hsl(var(--raised)); color: hsl(var(--primary)); border: 1px solid hsl(var(--primary)); font-size: 12px; padding: 3px 8px; white-space: nowrap; box-shadow: var(--glow-green); }
+  #pvt-pad { touch-action: manipulation; user-select: none; }
+  .cursor::after { content: "_"; margin-left: 2px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .fade { animation: fade 150ms var(--ease-out); } @keyframes fade { from { opacity: .5; } to { opacity: 1; } }
+    .cursor::after { animation: blink 1.1s steps(1) infinite; } @keyframes blink { 50% { opacity: 0; } }
+    .pulse { animation: pulse 2s ease-in-out 2; } @keyframes pulse { 50% { opacity: .55; } }
+  }
+  /* Body text is Geist. Label, button, badge, nav, tab, heading and display-number voices stay monospaced. */
+  h1, h2, .uppercase, .lbl, .btn, .badge, .glow, #tip, [role="tab"], #side button, .font-mono { font-family: var(--font-mono); }
+  .fillbar { transform-origin: left; }
+  @media (prefers-reduced-motion: no-preference) {
+    .fillbar { animation: fillbar .7s ease-out both; } @keyframes fillbar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    .scanline { animation: scany 1.6s ease-in-out infinite alternate; } @keyframes scany { from { transform: translateY(0); } to { transform: translateY(400px); } }
+  }

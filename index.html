@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASTRAVIA Console</title>
+<meta name="generator" content="AI-assisted: code, text and simulated data generated with Claude (Anthropic)">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="./styles/tailwind.css">
+<link rel="stylesheet" href="./styles/theme.css">
+<link rel="stylesheet" href="./styles/motion.css">
+</head>
+<body>
+<div class="shell mx-auto flex max-w-[1320px] flex-col gap-5 lg:flex-row lg:items-start">
+  <nav id="side" class="shrink-0 lg:sticky lg:top-5 lg:w-60" aria-label="Main navigation"></nav>
+  <div class="min-w-0 flex-1">
+    <div id="top"></div>
+    <main id="app" class="mt-5"></main>
+  </div>
+</div>
+<div id="tip" hidden></div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
