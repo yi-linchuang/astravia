@@ -30,10 +30,6 @@ Built as a prototype for the NASA Space Apps Challenge. It runs entirely in the 
 
 Assumptions that belong to this product, not to NASA: the radiation alert level (50 µGy/h), the escalation levels and follow-up timing, the symptom thresholds, and UTC = LMST + 5 h 32 min for Mars.
 
-## Disclaimer
-
-ASTRAVIA is a student challenge project. It is not affiliated with or endorsed by NASA or the Canadian Space Agency, and it is not medical advice. Thresholds marked "assumed" are product assumptions, not medical standards.
-
 ## AI Usage Disclosure
 
 ASTRAVIA was developed with the assistance of AI tools, including Claude and ChatGPT.
