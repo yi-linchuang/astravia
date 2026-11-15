@@ -160,6 +160,6 @@ function hBody() {
     )
     .join('')}</div>`;
   const figs = `<div class="grid grid-cols-2 gap-3">${[0, 1].map((fc) => `<div class="min-w-0"><p class="lbl mb-1 text-center">${fc ? 'Back' : 'Front'}</p><div class="border border-border bg-background">${faceSvg(fc)}</div></div>`).join('')}</div>`;
-  return `<div class="grid gap-5 lg:grid-cols-12"><div class="min-w-0 lg:col-span-6">${panel(S.region ? REG[S.region].name : 'Full body', `${lead}${figs}${legend}`, { right: S.region ? btn(ic('left', 'h-3.5 w-3.5') + 'Full body', 'unzoom', 'ghost') : '', cls: 'scan' })}</div>
+  return `<div class="grid gap-5 lg:grid-cols-12"><div class="min-w-0 lg:col-span-6">${panel(S.region ? REG[S.region].name : 'Full body', `${lead}${figs}${legend}`, { right: S.region ? btn(ic('shrink', 'h-3.5 w-3.5') + 'Full body', 'unzoom', 'ghost') : '', cls: 'scan' })}</div>
     <div class="min-w-0 lg:col-span-6">${S.region ? regionDetail(S.region) : overview}</div></div>${S.showMind ? `<div class="mt-5">${hMind()}</div>` : ''}`;
 }
