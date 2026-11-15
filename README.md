@@ -80,10 +80,6 @@ tests/smoke.mjs         end-to-end smoke test
 
 Vanilla JavaScript with ES modules, Tailwind CSS 3, no framework. State lives in one object (`src/state.js`). Views are functions that return HTML strings. One delegated listener handles clicks and calls the matching handler in `actions.js`. Routing uses the URL hash, so the app works on any static host.
 
-## Deploy to GitHub Pages
-
-Settings → Pages → Deploy from a branch → pick `main` and the `/ (root)` folder. Fonts (Geist, IBM Plex Mono, Space Mono) load from Google Fonts; without a connection the system fonts are used.
-
 ## License
 
 [MIT](LICENSE) © 2026 Yi-Lin. The MIT license covers this project's code and text. NASA and CSA source data keep their own terms of use.
