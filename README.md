@@ -1,10 +1,6 @@
 # ASTRAVIA
 
-**A health copilot that helps astronauts assess themselves when Earth is too far away to ask.**
-
-On a Mars mission a message to Earth takes up to 20 minutes each way. Crews have to judge their own health, and their readiness for a task, alone. ASTRAVIA turns wearable readings and quick self-checks into one daily question: *what changed compared with my own baseline, and what should I do about it?*
-
-Built as a prototype for the NASA Space Apps Challenge. It runs entirely in the browser, with no backend.
+ASTRAVIA goes beyond health monitoring, helping astronauts know what to do next when immediate medical support from Earth is unavailable. By turning personal health data and spaceflight risks into actionable guidance, it helps crews assess their condition and readiness for critical missions. ASTRAVIA supports independent health decisions, reduce preventable risks, and protect both crew well-being and mission safety.
 
 ## Features
 
